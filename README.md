@@ -9,6 +9,14 @@
 
 Python version >= 3.10.12 required
 
+Project Setup
+
+```bash
+git clone https://github.com/developerdost/softgrid-assignment
+
+cd softgrid-assignment
+````
+
 Create a virtual environment
 
 ```bash
@@ -31,7 +39,7 @@ pip install -r requirements.txt
 Execute Task 1
 
 ```bash
-python task_1 file_path_with_name
+python task_1.py file_path_with_name
 ````
 
 ## Task 2 
@@ -40,6 +48,12 @@ Install redis-server on ubuntu 22.04
 
 ```bash
 sudo apt-get install redis-server 
+```
+
+Migrate the migration File
+
+```bash
+python manage.py migrate
 ```
 
 Start your development django server
