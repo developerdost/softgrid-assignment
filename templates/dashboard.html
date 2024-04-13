@@ -1,0 +1,47 @@
+{% extends './base/base.html' %}
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <h5>User: {{ request.user }}</h5>
+    <form action="{% url 'account:logout' %}" method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
+
+
+<div class="row gx-5 mb-3">
+    <div class="col">
+        <div class="p-3 d-flex flex-column align-items-center shadow rounded">
+            <strong>Total Uploads</strong>
+            <span>{{ total_uploads }}</span>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 d-flex flex-column align-items-center shadow rounded">
+            <strong>Total Downloads</strong>
+            <span>{{ total_downloads }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3 text-end">
+    <a href="{% url 'upload:list' %}" class="btn btn-primary">My Files</a>
+</div>
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+{% endblock extra_script %}

@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+{% load humanize %} 
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+
+<div class="mb-5 d-flex justify-content-between">
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
+    <a href="{{ add_url }}" class="btn btn-primary">Upload File</a>
+</div>
+
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>File</th>
+            <th>Downloads</th>
+            <th>Uploaded Ago</th>
+            <th>Active</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+        <tr>
+            <td>#{{ forloop.counter }}</td>
+            <td>{{ object|truncatechars:50 }}</td>
+            <td>{{ object.download }}</td>
+            <td>{{ object.created_at|naturaltime }}</td>
+            <td>
+                {% if object.is_active %}
+                    <span class="badge text-bg-success">Yes</span>
+                    {% else %}
+                    <span class="badge text-bg-danger">No</span>
+                {% endif %}
+            </td>
+            <td>
+                <!-- Change the Status -->
+                <a href="{{ object.status_url }}" title="{% if object.is_active %}In-Active{% else %}Active{% endif %}" class="text-decoration-none me-2">
+                    <i class="fa-solid fa-circle text-{% if object.is_active %}danger{% else %}success{% endif %}"></i>
+                </a>
+                <!-- Download File -->
+                <a href="{{ object.download_url }}" title="Download" class="text-decoration-none me-2">
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                </a>
+                <!-- Share File via link -->
+                <a href="{{ object.share_url }}" title="Share" class="text-decoration-none me-2">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </a>
+                <!-- Delete file -->
+                <a href="{{ object.delete_url }}" title="Delete" class="text-decoration-none">
+                    <i class="fa-regular fa-trash-can"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock extra_script %}

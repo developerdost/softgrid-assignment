@@ -1,0 +1,17 @@
+Task 1:
+==> ==> ==>
+1. Take a CSV file as a parameters
+2. Sort a records in decending order based on column 2
+3. Handle any errors that may occur, such as a missing or improperly formatted CSV file
+
+Task 2:
+==> ==> ==>
+
+1. Upload a large file over 2GB
+2. User authentication system
+3. File should be encrypted using AES-256 encryption and vice versa
+4. Generate and send secure share links
+5. Automatically deletes uploaded files over 30 days
+6. Send a notification to the uploader
+7. Allow user to track their uploads and downloads
+8. Show the statistics on the dashboard.

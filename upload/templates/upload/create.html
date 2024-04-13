@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+
+<div class="mb-5 d-flex justify-content-between">
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
+    <a href="{{ cancel_url }}" class="btn btn-primary">My File</a>
+</div>
+
+<div class="rounded shadow p-3 text-center mb-3">
+
+    <div class="mb-3" id="alert-div"></div>
+
+    <form action="" method="post" enctype="multipart/form-data" id="upload-form">
+        {% csrf_token %}
+
+        {{ form.file }}
+        <div class="my-2" id="progress-div"></div>
+
+        <button type="submit" class="btn btn-primary mt-3 d-none">Submit</button>
+        
+        <button type="button" class="btn btn-danger mt-3 d-none" id="cancel-btn">Cancel</button>
+    </form>
+
+</div>
+
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+<script>
+    const alertDiv = document.querySelector('#alert-div')
+    const progressDiv = document.querySelector('#progress-div')
+    const uploadForm = document.querySelector('#upload-form')
+    const cancelBtn = document.querySelector('#cancel-btn')
+    const csrfToken = uploadForm.querySelector('input[name=csrfmiddlewaretoken]').value
+    
+    const inputFile = uploadForm.querySelector('#id_file')
+
+    inputFile.addEventListener('change', (e) => {
+        // Get the user seleted file, file_name, file_size
+        const userFile = inputFile.files[0]
+        const fileName = userFile.name
+        const fileSize = userFile.size
+
+        // Generate a new form data
+        const formData = new FormData()
+        formData.append('csrfmiddlewaretoken', csrfToken)
+        formData.append('file', userFile)
+
+        // Send an ajax request to server
+        $.ajax({
+            type: 'POST',
+            url: uploadForm.action,
+            enctype: uploadForm.enctype,
+            data: formData,
+            beforeSend: () => {
+                progressDiv.innerHTML = ''
+                alertDiv.innerHTML = ''
+                cancelBtn.classList.remove('d-none')
+            },
+            xhr: () => {
+                const xhr = new window.XMLHttpRequest()
+                xhr.upload.addEventListener('progress', (event) => {
+                    if (event.lengthComputable) {
+                        console.log(event);
+                        const percent = (event.loaded / event.total) * 100
+                        const percentInt = percent.toFixed(1)
+                        progressDiv.innerHTML = `
+<div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="${percentInt}" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: ${percentInt}%">${percentInt}%</div>
+</div>
+                        `
+                    }
+                })
+
+                cancelBtn.addEventListener('click', () => {
+                    xhr.abort()
+                    setTimeout( () => {
+                        uploadForm.reset()
+                        progressDiv.innerHTML = ''
+                        cancelBtn.classList.add('d-none')
+                    }, 2000)
+                })
+
+                return xhr
+            },
+            success: (response) => {
+                console.log(response);
+                alertDiv.innerHTML = `
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Sucess!</strong> Successfully uploaded the file.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+                `
+                cancelBtn.classList.add('d-none')
+            },
+            error: (error) => {
+                console.log(error);
+                alertDiv.innerHTML = `
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Failed!</strong> Something went wrong.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+                `
+                cancelBtn.classList.add('d-none')
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    })
+    
+    
+</script>
+{% endblock extra_script %}

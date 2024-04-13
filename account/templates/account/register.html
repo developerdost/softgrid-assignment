@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-6">
+        
+        <h4 class="mb-5 text-center">User Registration Form</h4>
+
+        {% if form.errors %}
+        <div class="alert alert-warning" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <strong>{{ error|escape }}</strong>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <strong>{{ error|escape }}</strong>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="col">
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                {{ form.password1 }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                {{ form.password2 }}
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Register An Account</button>
+            </div>
+        </form>
+        
+        <div class="text-start">
+            <a href="{% url 'account:login' %}" class="btn btn-primary">Login Into Account</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+{% endblock extra_script %}

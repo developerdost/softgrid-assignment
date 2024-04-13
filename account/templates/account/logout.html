@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-6">
+        
+        <h4 class="mb-5 text-center">Logout Page</h4>
+
+        <div class="text-center">
+            <a href="{% url 'account:login' %}" class="btn btn-primary">Login Into Account</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+{% endblock extra_script %}

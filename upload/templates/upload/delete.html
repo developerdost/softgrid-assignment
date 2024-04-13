@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+
+<!-- Extra Heads -->
+{% block extra_head %}
+{% endblock extra_head %}
+
+
+
+<!-- Contents -->
+{% block content %}
+<div class="text-center">
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h4 class="mb-3">Are you sure want to delete ?</h4>
+        <h5 class="mb-3">{{ object }}</h5>
+        <div class="d-flex gap-3 justify-content-center">
+            <button type="submit" class="btn btn-primary">Yes</button>
+            <a href="{{ cancel_url }}" class="btn btn-danger">No</a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock content %}
+
+
+
+<!-- Extra Scripts -->
+{% block extra_script %}
+{% endblock extra_script %}
